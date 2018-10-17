@@ -37,7 +37,9 @@ export class TextboxComponent implements OnInit, OnChanges {
 
     ngOnChanges(changes: SimpleChanges) {
         if (changes['control']) {
-            this._originalValue = this.control.value;
+            this._originalValue = this.control
+                ? this.control.value
+                : null;
         }
     }
 

@@ -12,7 +12,6 @@ import { Subject } from 'rxjs/Subject';
 })
 export class DeploymentSlotsShellComponent implements OnDestroy {
     viewInfo: TreeViewInfo<SiteData>;
-    swapMode: boolean;
     ngUnsubscribe: Subject<void>;
 
     constructor(translateService: TranslateService, route: ActivatedRoute) {
@@ -21,18 +20,16 @@ export class DeploymentSlotsShellComponent implements OnDestroy {
         route.params
             .takeUntil(this.ngUnsubscribe)
             .subscribe(x => {
+                const resourceId = `/subscriptions/${x['subscriptionId']}/resourceGroups/${x[
+                    'resourceGroup'
+                ]}/providers/Microsoft.Web/sites/${x['site']}` + (x['slot'] ? `/slots/${x['slot']}` : ``);
+
                 this.viewInfo = {
-                    resourceId: `/subscriptions/${x['subscriptionId']}/resourceGroups/${x[
-                        'resourceGroup'
-                    ]}/providers/Microsoft.Web/sites/${x['site']}` + (x['slot'] ? `/slots/${x['slot']}` : ``),
+                    resourceId: resourceId,
                     dashboardType: DashboardType.none,
                     node: null,
                     data: null
                 };
-
-                if (x['action'] && x['action'] === 'swap') {
-                    this.swapMode = true;
-                }
             });
     }
 

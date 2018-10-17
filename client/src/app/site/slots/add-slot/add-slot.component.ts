@@ -13,6 +13,7 @@ import { Site } from './../../../shared/models/arm/site';
 import { SiteConfig } from './../../../shared/models/arm/site-config';
 import { AuthzService } from './../../../shared/services/authz.service';
 import { LogService } from './../../../shared/services/log.service';
+import { PortalService } from '../../../shared/services/portal.service';
 import { SiteService } from './../../../shared/services/site.service';
 import { ScenarioService } from './../../../shared/services/scenario/scenario.service';
 import { RequiredValidator } from './../../../shared/validators/requiredValidator';
@@ -33,9 +34,10 @@ export interface AddSlotParameters {
     styleUrls: ['./../common.scss', './add-slot.component.scss'],
 })
 export class AddSlotComponent extends FeatureComponent<ResourceId> implements OnDestroy {
-    @Input() set resourceId(resourceId: ResourceId) {
+    @Input() set resourceIdInput(resourceId: ResourceId) {
         this.setInput(resourceId);
     }
+    @Input() showHeader = false;
 
     @Output('parameters') parameters$: Subject<AddSlotParameters>;
 
@@ -57,15 +59,16 @@ export class AddSlotComponent extends FeatureComponent<ResourceId> implements On
         private _siteService: SiteService,
         private _translateService: TranslateService,
         private _logService: LogService,
+        private _portalService: PortalService,
         private _authZService: AuthzService,
         private _scenarioService: ScenarioService,
         private _injector: Injector,
     ) {
-        super('AddSlotComponent', _injector, SiteTabIds.deploymentSlotsConfig);
+        super('AddSlotComponent', _injector, SiteTabIds.deploymentSlotsCreate);
 
         // TODO [andimarc]
         // For ibiza scenarios, this needs to match the deep link feature name used to load this in ibiza menu
-        this.featureName = 'deploymentslots';
+        this.featureName = 'deploymentslots/actions/add';
         this.isParentComponent = true;
 
         this.parameters$ = new Subject<AddSlotParameters>();
@@ -215,6 +218,11 @@ export class AddSlotComponent extends FeatureComponent<ResourceId> implements On
 
         if (close) {
             this.parameters$.next(null);
+            this._closeSelf();
         }
+    }
+
+    private _closeSelf() {
+        this._portalService.closeSelf();
     }
 }

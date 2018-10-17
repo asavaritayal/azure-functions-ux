@@ -297,7 +297,8 @@ export class SiteManageComponent extends FeatureComponent<TreeViewInfo<SiteData>
                     detailBlade: 'PropertySheetBlade',
                     detailBladeInputs: {
                         resourceId: this._descriptor.resourceId
-                    }
+                    },
+                    openAsContextBlade: true,
                 },
                 this._portalService
             ),

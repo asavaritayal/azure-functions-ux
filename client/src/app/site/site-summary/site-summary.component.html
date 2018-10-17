@@ -9,6 +9,11 @@
     (click)="openSwapBlade()"
     [disabled]="!hasWriteAccess || !hasSwapAccess || context?.site.properties.targetSwapSlot !== null"></command>
 
+  <command displayText="{{ 'swap' | translate }}"
+    iconUrl="image/swap.svg"
+    (click)="openSwapBlade2()"
+    [disabled]="!hasWriteAccess || !hasSwapAccess || context?.site.properties.targetSwapSlot !== null"></command>
+
   <command displayText="{{ 'restart' | translate }}"
     iconUrl="image/restart.svg"
     (click)="restart()"
